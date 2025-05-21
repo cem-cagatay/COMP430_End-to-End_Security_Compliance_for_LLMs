@@ -1,0 +1,5 @@
+setup.py
+src/llmsec.egg-info/PKG-INFO
+src/llmsec.egg-info/SOURCES.txt
+src/llmsec.egg-info/dependency_links.txt
+src/llmsec.egg-info/top_level.txt
