@@ -1,0 +1,25 @@
+{
+  "HR": {
+    "Employees": {
+      "SELECT": { "allow": ["*"],           "deny": ["password"] },
+      "UPDATE": { "allow": ["salary"], "deny": [] }
+    }
+  },
+  "Manager": {
+    "Employees": {
+      "SELECT": { "allow": ["*"], "deny": ["password"] },
+      "GRANT":  { "allow": ["*"], "deny": [] }
+    }
+  },
+  "Intern": { },
+  "IT": {
+    "Employees": {
+      "INSERT": { "allow": ["*"], "deny": [] },
+      "DELETE": { "allow": ["*"], "deny": [] },
+      "SELECT": { "allow": ["*"], "deny": ["salary","password"] },
+      "UPDATE": { "allow": ["*"], "deny": ["salaries"] }
+    }
+  }
+}
+
+
