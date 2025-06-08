@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+
 from llmsec.database     import MySQLDatabase
 from llmsec.mitigation   import ChatGPTClient
 from llmsec.chat_session import ChatSession
@@ -12,7 +14,8 @@ def main():
         password="Soydino1907.?02",
         database="db-430"
     )
-
+    
+    load_dotenv()
     # —————— init OpenAI client ——————
     client = ChatGPTClient(api_key=os.getenv("OPENAI_API_KEY"))
 
