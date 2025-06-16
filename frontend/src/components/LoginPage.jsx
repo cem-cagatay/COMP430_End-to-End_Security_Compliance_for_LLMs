@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Login.css';
 
 function Login({ onLogin }) {
   const [input, setInput] = useState("");
@@ -11,19 +12,25 @@ function Login({ onLogin }) {
       });
       onLogin(res.data.user_id, res.data.role);
     } catch (err) {
-      alert("Login failed: " + err.response?.data?.detail || err.message);
+      alert("Login failed: " + (err.response?.data?.detail || err.message));
     }
   };
 
   return (
-    <div>
-      <input
-        type="number"
-        placeholder="Enter User ID"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
+    <div className="login-wrapper">
+      <div className="login-box">
+        <h1 className="login-title">🔐 Secure Chat Assistant</h1>
+        <input
+          className="login-input"
+          type="number"
+          placeholder="Enter User ID"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button className="login-button" onClick={handleLogin}>
+          Login
+        </button>
+      </div>
     </div>
   );
 }

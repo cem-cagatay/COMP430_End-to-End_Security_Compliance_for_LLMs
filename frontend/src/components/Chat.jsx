@@ -2,11 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./Chat.css";
 
-function Chat({ userId, role }) {
+function Chat({ userId, role, onLogout }) {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    { sender: "System", text: `✔ Logged in as ${role}` }
-  ]);
+  const [messages, setMessages] = useState([]); // 🔄 Removed initial role message
   const messagesEndRef = useRef(null);
 
   const sendMessage = async () => {
@@ -37,6 +35,13 @@ function Chat({ userId, role }) {
 
   return (
     <div className="chat-container">
+      <div className="chat-header">
+        <div className="chat-role">✔ Logged in as {role}</div>
+        <button className="chat-logout-button" onClick={onLogout}>
+          Sign Out
+        </button>
+      </div>
+
       <div className="chat-messages">
         {messages.map((msg, idx) => (
           <div
@@ -60,6 +65,7 @@ function Chat({ userId, role }) {
         ))}
         <div ref={messagesEndRef} />
       </div>
+
       <div className="chat-input-container">
         <input
           type="text"

@@ -9,11 +9,17 @@ function App() {
   return (
     <div className="container">
       <h2>🔐 Secure Chat Assistant</h2>
-      {userId ? (
-        <Chat userId={userId} role={role} />
-      ) : (
-        <Login onLogin={(id, role) => { setUserId(id); setRole(role); }} />
-      )}
+    {userId ? (
+      <Chat userId={userId} role={role} onLogout={() => {
+        setUserId(null);
+        setRole(null);
+      }} />
+    ) : (
+      <Login onLogin={(uid, role) => {
+        setUserId(uid);
+        setRole(role);
+      }} />
+    )}
     </div>
   );
 }
