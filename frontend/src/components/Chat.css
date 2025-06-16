@@ -1,0 +1,97 @@
+
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  scroll-behavior: smooth;
+  padding: 15px;
+  min-height: 0; /* ⬅ Important for flex children */
+}
+
+/* Ensure each message row is a flex container */
+.chat-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.chat-row-user {
+  justify-content: flex-end;
+}
+
+.chat-row-assistant {
+  justify-content: flex-start;
+}
+
+.chat-bubble {
+  display: inline-block;
+  max-width: 75%;
+  padding: 12px 15px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.chat-bubble.user {
+  background-color: #007bff;
+  color: white;
+  text-align: right;
+}
+
+.chat-bubble.assistant {
+  background-color: #e4e6eb;
+  color: black;
+  text-align: left;
+}
+
+.chat-bubble.system {
+  background-color: #ffeeba;
+  color: #856404;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.chat-send-button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-send-button:hover {
+  background-color: #218838;
+}
