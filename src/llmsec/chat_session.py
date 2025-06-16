@@ -1,8 +1,8 @@
 from typing import List, Dict, Any
 import re
-from llmsec.mitigation import preprocess, postprocess, ChatGPTClient
-from llmsec.database import MySQLDatabase
-from llmsec.mitigation import make_system_prompt
+from src.llmsec.mitigation import preprocess, postprocess, ChatGPTClient
+from src.llmsec.database import MySQLDatabase
+from src.llmsec.mitigation import make_system_prompt
 
 class ChatSession:
     """

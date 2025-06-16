@@ -23,3 +23,7 @@ venv/
 
 # VSCode settings (if you use it)
 .vscode/
+
+# Node.js (frontend)
+frontend/node_modules/
+frontend/package-lock.json
