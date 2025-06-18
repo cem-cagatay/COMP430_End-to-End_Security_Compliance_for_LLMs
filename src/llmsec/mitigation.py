@@ -3,19 +3,6 @@ import re
 import openai
 from typing import List, Dict, Any
 from openai import OpenAI
-
-class ChatGPTClient:
-    def __init__(self, api_key=None, model="gpt-3.5-turbo"):
-        self.client = OpenAI(api_key=api_key)        # create a client instance
-        self.model  = model
-
-    def chat(self, messages):
-        # “chat.completions.create” is the new method name:
-        resp = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages
-        )
-        return resp.choices[0].message.content
     
 def preprocess(prompt: str, role: str, policy: Dict[str, Any]) -> str:
     perms = policy.get(role, {})

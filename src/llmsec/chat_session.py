@@ -1,6 +1,8 @@
 from typing import List, Dict, Any
 import re
-from src.llmsec.mitigation import preprocess, postprocess, ChatGPTClient
+from src.llmsec.mitigation import preprocess, postprocess
+from src.llmsec.clients.base_client import LLMClient
+from src.llmsec.clients.hf_client import HFClient
 from src.llmsec.database import MySQLDatabase
 from src.llmsec.mitigation import make_system_prompt
 
@@ -9,8 +11,8 @@ class ChatSession:
     Maintains a conversation with ChatGPT,
     enforcing RBAC and actually hitting the database.
     """
-    def __init__(self, client: ChatGPTClient, db: MySQLDatabase,
-                 user_id: int, policy: Dict[str, Any]):
+    def __init__(self, client: LLMClient, db: MySQLDatabase,
+        user_id: int, policy: Dict[str, Any]):
         self.client  = client
         self.db      = db
         self.user_id = user_id
@@ -35,8 +37,13 @@ class ChatSession:
             "on the Employees table.  \n**Only** output the SQL, no explanation.\n"
             f"Request: {filtered}"
         )
-        self.history.append({"role":"user","content":sql_request})
-        raw_sql = self.client.chat(self.history).strip()
+        if isinstance(self.client, HFClient):
+            # Flatten full prompt for Zephyr
+            flattened_prompt = f"{self.history[0]['content']}\n\n{sql_request}"
+            raw_sql = self.client.chat([{"role": "user", "content": flattened_prompt}]).strip()
+        else:
+            self.history.append({"role":"user","content":sql_request})
+            raw_sql = self.client.chat(self.history).strip()
         print("🔍 Generated SQL:\n", raw_sql)
 
         # … after you grab raw_sql …
@@ -51,7 +58,7 @@ class ChatSession:
         if not clean.endswith(";"):
             clean += ";"
 
-        print("🛠️ Cleaned SQL:", clean)
+        print("Cleaned SQL:", clean)
 
         # now match (semicolon optional if you choose Option B instead)
         pattern = (

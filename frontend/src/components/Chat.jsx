@@ -4,11 +4,21 @@ import "./Chat.css";
 
 function Chat({ userId, role, onLogout }) {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]); // 🔄 Removed initial role message
+  const [messages, setMessages] = useState([]);
+  const [modelSelected, setModelSelected] = useState(false);
+  const [modelName, setModelName] = useState("");
   const messagesEndRef = useRef(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
+
+    if (!modelSelected) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "System", text: "⚠️ Please select a model first." }
+      ]);
+      return;
+    }
 
     const userMsg = { sender: "You", text: input };
     setMessages((prev) => [...prev, userMsg]);
@@ -22,11 +32,31 @@ function Chat({ userId, role, onLogout }) {
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { sender: "System", text: "Error: " + err.message }
+        { sender: "System", text: "❌ Error: " + err.message }
       ]);
     }
 
     setInput("");
+  };
+
+  const handleModelSelect = async (model) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/select-model`, {
+        user_id: userId,
+        model: model
+      });
+      setModelSelected(true);
+      setModelName(model);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "System", text: `✅ Model set to ${model.toUpperCase()}` }
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "System", text: "Model selection failed: " + err.message }
+      ]);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +71,14 @@ function Chat({ userId, role, onLogout }) {
           Sign Out
         </button>
       </div>
+
+      {!modelSelected && (
+        <div className="chat-model-select">
+          <p><strong>Select a model:</strong></p>
+          <button onClick={() => handleModelSelect("openai")} className="chat-model-button">OpenAI</button>
+          <button onClick={() => handleModelSelect("hf")} className="chat-model-button">HuggingFace</button>
+        </div>
+      )}
 
       <div className="chat-messages">
         {messages.map((msg, idx) => (
