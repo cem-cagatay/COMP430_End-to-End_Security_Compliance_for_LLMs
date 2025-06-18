@@ -1,12 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from api.schemas.chat_schema import LoginRequest, ModelSelectRequest, ChatRequest
+from src.llmsec.chat_session.hf_session import HFChatSession
 from src.llmsec.database import MySQLDatabase
-from src.llmsec.chat_session import ChatSession
+from src.llmsec.chat_session.chatgpt_session import ChatGPTChatSession
 from src.llmsec.policy import load_policy
 from src.llmsec.clients.hf_client import HFClient
 from src.llmsec.clients.chatgpt_client import ChatGPTClient
-#from src.llmsec.clients.openai_client import OpenAIClient
-# from src.llmsec.clients.hf_client import HFLocalClient  # Swap later if needed
 
 import os
 from dotenv import load_dotenv
@@ -43,13 +42,13 @@ def select_model(data: ModelSelectRequest):
     # Choose model
     if data.model == "hf":
         llm_client = HFClient()
+        sessions[data.user_id] = HFChatSession(llm_client, db, data.user_id, POLICY)
     elif data.model == "openai":
         llm_client = ChatGPTClient(api_key=os.getenv("OPENAI_API_KEY"))
+        sessions[data.user_id] = ChatGPTChatSession(llm_client, db, data.user_id, POLICY)
     else:
         raise HTTPException(status_code=400, detail="Invalid model selection")
 
-    # Create session
-    sessions[data.user_id] = ChatSession(llm_client, db, data.user_id, POLICY)
     return {"status": "Model set successfully"}
 
 

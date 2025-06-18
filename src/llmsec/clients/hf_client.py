@@ -20,7 +20,8 @@ class HFClient(LLMClient):
             "inputs": prompt,
             "parameters": {
                 "max_new_tokens": 200,
-                "do_sample": True
+                "do_sample": True,
+                "stop": ["User:", "Assistant:"]
             }
         }
 
@@ -28,5 +29,5 @@ class HFClient(LLMClient):
         if response.status_code != 200:
             return f"[HF Error {response.status_code}]: {response.text}"
 
-        generated = response.json()[0]["generated_text"]
-        return generated[len(prompt):].strip()  # strip prompt from response
+        # 🛑 Do NOT strip prompt
+        return response.json()[0]["generated_text"].strip()
