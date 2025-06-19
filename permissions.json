@@ -26,7 +26,7 @@
   "IT": {
     "Employees": {
       "SELECT": { "allow": ["*"], "deny": ["salary","password"] },
-      "UPDATE": { "allow": ["*"], "deny": ["salaries"] },
+      "UPDATE": { "allow": ["*"], "deny": ["salary"] },
       "INSERT": { "allow": ["*"], "deny": [] },
       "DELETE": { "allow": ["*"], "deny": [] }
     }

@@ -30,7 +30,7 @@ class ChatGPTChatSession(BaseChatSession):
             return raw_output  # already a natural response
 
     def _preprocess(self, text: str) -> str:
-        return preprocess(text, self.role, self.policy)
+        return preprocess(text, self.role, self.policy, self.db)
 
     def _build_prompt(self, filtered_text: str):
         sql_instruction = (

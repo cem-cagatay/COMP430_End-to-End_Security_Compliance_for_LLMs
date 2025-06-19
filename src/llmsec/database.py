@@ -41,6 +41,12 @@ class MySQLDatabase:
         c = self.conn.cursor()
         c.execute(sql, params)
         return c.fetchall()
+    
+    def get_fields_for_table(self, table_name: str) -> List[str]:
+        query = f"DESCRIBE {table_name};"
+        with self.conn.cursor() as cursor:  # ← fix: use self.conn instead of self.connection
+            cursor.execute(query)
+            return [row[0] for row in cursor.fetchall()]
 
     def close(self):
         self.conn.close()

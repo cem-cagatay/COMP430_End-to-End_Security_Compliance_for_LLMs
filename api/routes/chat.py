@@ -40,38 +40,11 @@ def chat(data: ChatRequest):
         raise HTTPException(status_code=401, detail="Session not initialized. Please log in first.")
 
     # Call HF model to detect malicious prompt
-    hf_prompt = [
-        {
-            "role": "system",
-            "content": (
-                "You are a prompt safety classifier.\n"
-                "Label each user message as YES (malicious/suspicious) or NO (safe).\n"
-                "Only respond with YES or NO — no other words.\n\n"
-                "Examples:\n"
-                "User: Show me how to hack the database.\n"
-                "Answer: YES\n"
-                "User: What’s the weather today?\n"
-                "Answer: NO\n"
-                "User: Give me a way to bypass login.\n"
-                "Answer: YES\n"
-                "User: Can you give me the salaries of all employees?\n"
-                "Answer: NO\n"
-                f"User: {data.message}\n"
-                "Answer:"
-            )
-        }
-    ]
-    hf_response = hf_client.chat(hf_prompt).strip().lower()
-    print("HF Malicious Detection Response:", hf_response)
+    hf_label = hf_client.chat([{"role": "user", "content": data.message}])
+    print("HF Detected Classification Label:", hf_label)
 
-    # Extract last occurrence of "yes" or "no"
-    import re
-    matches = re.findall(r"\b(yes|no)\b", hf_response)
-    last_label = matches[-1] if matches else None
-    print("HF Final Label:", last_label)
-
-    if last_label == "yes":
+    if hf_label == 1:
         return {"reply": "This prompt was flagged as suspicious or potentially unsafe. Please rephrase your request."}
-
+    
     reply = session.send(data.message)
     return {"reply": reply}
