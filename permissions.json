@@ -1,23 +1,34 @@
 {
   "HR": {
     "Employees": {
-      "SELECT": { "allow": ["*"],           "deny": ["password"] },
-      "UPDATE": { "allow": ["salary"], "deny": [] }
+      "SELECT": { "allow": ["*"],"deny": ["password"] },
+      "UPDATE": { "allow": ["salary"], "deny": [] },
+      "INSERT": { "allow": [], "deny": [] },
+      "DELETE": { "allow": [], "deny": [] }
     }
   },
   "Manager": {
     "Employees": {
       "SELECT": { "allow": ["*"], "deny": ["password"] },
-      "GRANT":  { "allow": ["*"], "deny": [] }
+      "UPDATE": { "allow": ["*"], "deny": ["password"] },
+      "INSERT": { "allow": [], "deny": [] },
+      "DELETE": { "allow": [], "deny": [] }
     }
   },
-  "Intern": { },
+  "Intern": { 
+    "Employees": {
+      "SELECT": { "allow": [], "deny": [] },
+      "UPDATE": { "allow": [], "deny": [] },
+      "INSERT": { "allow": [], "deny": [] },
+      "DELETE": { "allow": [], "deny": [] }
+    }
+  },
   "IT": {
     "Employees": {
-      "INSERT": { "allow": ["*"], "deny": [] },
-      "DELETE": { "allow": ["*"], "deny": [] },
       "SELECT": { "allow": ["*"], "deny": ["salary","password"] },
-      "UPDATE": { "allow": ["*"], "deny": ["salaries"] }
+      "UPDATE": { "allow": ["*"], "deny": ["salaries"] },
+      "INSERT": { "allow": ["*"], "deny": [] },
+      "DELETE": { "allow": ["*"], "deny": [] }
     }
   }
 }

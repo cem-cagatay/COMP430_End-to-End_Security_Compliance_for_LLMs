@@ -2,9 +2,6 @@ from typing import List, Dict, Any
 import re
 from src.llmsec.chat_session.base import BaseChatSession
 from src.llmsec.mitigation import preprocess, postprocess
-from src.llmsec.clients.base_client import LLMClient
-from src.llmsec.clients.hf_client import HFClient
-from src.llmsec.database import MySQLDatabase
 from src.llmsec.mitigation import make_system_prompt
 
 class ChatGPTChatSession(BaseChatSession):
@@ -19,26 +16,29 @@ class ChatGPTChatSession(BaseChatSession):
 
     def send(self, user_text: str) -> str:
         filtered = self._preprocess(user_text)
+        print("Preprocessed:", filtered)
         if filtered.startswith("ACCESS DENIED"):
             return filtered
 
         self._build_prompt(filtered)
-        raw_sql = self._query_llm()
-        print("🔍 Generated SQL:\n", raw_sql)
+        raw_output = self._query_llm()
+        clean_sql = self._extract_sql(raw_output)
 
-        clean_sql = self._extract_sql(raw_sql)
-        if clean_sql is None:
-            return f"Error: could not find valid SQL:\n{raw_sql}"
-
-        return self._run_query_and_format_result(clean_sql)
+        if clean_sql:
+            return self._run_query_and_format_result(clean_sql)
+        else:
+            return raw_output  # already a natural response
 
     def _preprocess(self, text: str) -> str:
         return preprocess(text, self.role, self.policy)
 
     def _build_prompt(self, filtered_text: str):
         sql_instruction = (
-            "Translate the user’s request into a single SQL SELECT statement "
-            "on the Employees table. Only output the SQL, no explanation."
+            "You are a secure assistant who can generate SQL queries for the Employees database "
+            "when the user asks for information that requires querying the data.\n"
+            "If the user's request is conversational, general, or not related to data in the Employees table, "
+            "respond naturally instead. Only generate a SQL SELECT statement if appropriate.\n"
+            "When generating SQL, do not explain it — just return the raw query."
         )
         self.history.append({"role": "user", "content": f"{sql_instruction}\nRequest: {filtered_text}"})
 

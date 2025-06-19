@@ -19,8 +19,11 @@ class HFClient(LLMClient):
         payload = {
             "inputs": prompt,
             "parameters": {
-                "max_new_tokens": 200,
-                "do_sample": True,
+                "max_new_tokens": 30,
+                "do_sample": False,
+                "temperature": 0.2,            # No creativity
+                "top_k": 1,                    # Limit sampling space
+                "top_p": 0.9,
                 "stop": ["User:", "Assistant:"]
             }
         }
