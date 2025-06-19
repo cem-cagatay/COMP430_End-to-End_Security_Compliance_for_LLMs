@@ -1,5 +1,5 @@
 # Secure Chat Assistant with Malicious Prompt Detection and Role-Based Access Control
-📣 **Please read the "Modela Used" part carefully**
+📣 **Please read the "Models Used" part carefully**
 
 This project is a secure, role-aware conversational assistant designed to prevent misuse of Large Language Models (LLMs) in enterprise settings. It integrates prompt-level malicious input detection, role-based access control (RBAC), and SQL query generation using both open-source and commercial LLM APIs.
 
