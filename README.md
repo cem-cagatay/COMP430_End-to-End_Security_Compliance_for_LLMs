@@ -3,7 +3,8 @@
 📣 **Please read the "Models Used" part carefully**
 
 Note: The .env file is intentionally excluded from this repository for security reasons. The endpoint URLs and API tokens are provided in the project report.
-OPENAI_API_KEY=yopenai_key
+## Required API Keys & Endpoint URLs
+OPENAI_API_KEY=openai_key
 HF_MODEL_ENDPOINT=https://api-inference.huggingface.co/models/model-name
 HF_TOKEN = hf_token
 
