@@ -2,6 +2,11 @@
 📣 **In the project report, we demonstrated outputs of the application from the version in the pipeline_v2 branch. The last version of the project is in that branch**
 📣 **Please read the "Models Used" part carefully**
 
+Note: The .env file is intentionally excluded from this repository for security reasons. The endpoint URLs and API tokens are provided in the project report.
+OPENAI_API_KEY=yopenai_key
+HF_MODEL_ENDPOINT=https://api-inference.huggingface.co/models/model-name
+HF_TOKEN = hf_token
+
 This project is a secure, role-aware conversational assistant designed to prevent misuse of Large Language Models (LLMs) in enterprise settings. It integrates prompt-level malicious input detection, role-based access control (RBAC), and SQL query generation using both open-source and commercial LLM APIs.
 
 ## Project Overview
