@@ -4,9 +4,9 @@
 
 Note: The .env file is intentionally excluded from this repository for security reasons. The endpoint URLs and API tokens are provided in the project report.
 ## Required API Keys & Endpoint URLs
-OPENAI_API_KEY=openai_key
-HF_MODEL_ENDPOINT=https://api-inference.huggingface.co/models/model-name
-HF_TOKEN = hf_token
+- OPENAI_API_KEY=openai_key
+- HF_MODEL_ENDPOINT=https://api-inference.huggingface.co/models/model-name
+- HF_TOKEN = hf_token
 
 This project is a secure, role-aware conversational assistant designed to prevent misuse of Large Language Models (LLMs) in enterprise settings. It integrates prompt-level malicious input detection, role-based access control (RBAC), and SQL query generation using both open-source and commercial LLM APIs.
 
